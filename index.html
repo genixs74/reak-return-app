@@ -86,7 +86,7 @@
     <input type="time" id="startTime" required />
 
     <label for="durationMinutes">Break Duration (minutes):</label>
-    <input type="number" id="durationMinutes" min="0" value="0" />
+    <input type="number" id="durationMinutes" min="0" placeholder="e.g. 30" />
 
     <button onclick="calculateReturnTime()">Calculate</button>
 
@@ -96,8 +96,10 @@
   <script>
     function calculateReturnTime() {
       const start = document.getElementById("startTime").value;
-      const breakMinutes = parseInt(document.getElementById("durationMinutes").value, 10) || 0;
+      const breakMinutesInput = document.getElementById("durationMinutes").value;
       const clockIn = document.getElementById("clockInTime").value;
+
+      const breakMinutes = breakMinutesInput === "" ? 0 : parseInt(breakMinutesInput, 10);
 
       if (!start || !clockIn || breakMinutes < 0) {
         document.getElementById("result").innerText = "Please enter clock-in time, break start, and break duration.";
