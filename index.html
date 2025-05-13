@@ -52,7 +52,7 @@
         return;
       }
 
-      const [hours, minutes] = start.split(":".map(Number));
+      const [hours, minutes] = start.split(":").map(Number);
       const startDate = new Date();
       startDate.setHours(hours, minutes, 0);
 
@@ -64,3 +64,4 @@
   </script>
 </body>
 </html>
+
