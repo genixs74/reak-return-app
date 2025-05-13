@@ -112,17 +112,17 @@
       const returnDate = new Date(breakStartDate.getTime() + breakMs);
       const returnTime = returnDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      // Now calculate exactly 8 hours from clockIn
       const [clockInHour, clockInMinute] = clockIn.split(":").map(Number);
       const clockInDate = new Date();
       clockInDate.setHours(clockInHour, clockInMinute, 0);
 
-      const totalWorkTime = 8 * 60 * 60000; // 8 hours
-      const clockOutDate = new Date(clockInDate.getTime() + totalWorkTime);
+      // Total shift = 8 hours + break
+      const totalWorkWithBreakMs = (8 * 60 * 60000) + breakMs;
+      const clockOutDate = new Date(clockInDate.getTime() + totalWorkWithBreakMs);
       const clockOutTime = clockOutDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
       document.getElementById("result").innerText = `You need to clock back in at ${returnTime}.
-To complete 8 full work hours from clock-in, you should clock out at ${clockOutTime}.`;
+To work exactly 8 hours PLUS your break, clock out at ${clockOutTime}.`;
     }
   </script>
 </body>
