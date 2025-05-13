@@ -9,11 +9,12 @@
     html, body {
       font-family: 'Inter', sans-serif;
       background-color: #f4f4f7;
-      height: 100%;
+      height: 100vh;
       margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
+      box-sizing: border-box;
     }
 
     .container {
@@ -23,9 +24,7 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       width: 100%;
       max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      box-sizing: border-box;
     }
 
     h2 {
@@ -48,6 +47,7 @@
       border: 1px solid #ccc;
       margin-bottom: 1rem;
       font-size: 1rem;
+      box-sizing: border-box;
     }
 
     button {
@@ -88,6 +88,9 @@
     <label for="durationMinutes">Break Duration (minutes):</label>
     <input type="number" id="durationMinutes" min="0" value="0" />
 
+    <label for="clockInTime">Clock In Time:</label>
+    <input type="time" id="clockInTime" required />
+
     <button onclick="calculateReturnTime()">Calculate Return Time</button>
 
     <div id="result"></div>
@@ -98,9 +101,10 @@
       const start = document.getElementById("startTime").value;
       const hours = parseInt(document.getElementById("durationHours").value, 10) || 0;
       const minutes = parseInt(document.getElementById("durationMinutes").value, 10) || 0;
+      const clockIn = document.getElementById("clockInTime").value;
 
-      if (!start || (hours === 0 && minutes === 0)) {
-        document.getElementById("result").innerText = "Please enter a start time and duration.";
+      if (!start || !clockIn || (hours === 0 && minutes === 0)) {
+        document.getElementById("result").innerText = "Please enter clock-in time, break start, and break duration.";
         return;
       }
 
@@ -108,14 +112,20 @@
       const startDate = new Date();
       startDate.setHours(startHour, startMinute, 0);
 
-      const totalMs = (hours * 60 + minutes) * 60000;
-      const endDate = new Date(startDate.getTime() + totalMs);
-      const returnTime = endDate.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      const totalBreakMs = (hours * 60 + minutes) * 60000;
+      const returnDate = new Date(startDate.getTime() + totalBreakMs);
+      const returnTime = returnDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      document.getElementById("result").innerText = `You need to clock back in at ${returnTime}.`;
+      const [clockInHour, clockInMinute] = clockIn.split(":").map(Number);
+      const clockInDate = new Date();
+      clockInDate.setHours(clockInHour, clockInMinute, 0);
+
+      const totalWorkMs = 8 * 60 * 60000; // 8 hours
+      const clockOutDate = new Date(clockInDate.getTime() + totalWorkMs + totalBreakMs);
+      const clockOutTime = clockOutDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById("result").innerText = `You need to clock back in at ${returnTime}.
+You should clock out by ${clockOutTime} to stay within 8 hours.`;
     }
   </script>
 </body>
