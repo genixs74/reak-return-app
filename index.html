@@ -1,46 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Break Return Time App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f4f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    label, input, button {
+
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 0.5rem;
       display: block;
-      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #0077ff;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
       width: 100%;
     }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
+
+    button:hover {
+      background-color: #005fcc;
     }
+
     #result {
-      font-weight: bold;
-      margin-top: 20px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      color: #222;
     }
   </style>
 </head>
 <body>
-  <h2>Break Return Time Calculator</h2>
+  <div class="container">
+    <h2>Break Return Time Calculator</h2>
 
-  <label for="startTime">Break Start Time:</label>
-  <input type="time" id="startTime" required>
+    <label for="startTime">Break Start Time:</label>
+    <input type="time" id="startTime" required />
 
-  <label for="duration">Break Duration (minutes):</label>
-  <input type="number" id="duration" min="1" required>
+    <label for="duration">Break Duration (minutes):</label>
+    <input type="number" id="duration" min="1" required />
 
-  <button onclick="calculateReturnTime()">Calculate Return Time</button>
+    <button onclick="calculateReturnTime()">Calculate Return Time</button>
 
-  <div id="result"></div>
+    <div id="result"></div>
+  </div>
 
   <script>
     function calculateReturnTime() {
@@ -57,7 +102,10 @@
       startDate.setHours(hours, minutes, 0);
 
       const endDate = new Date(startDate.getTime() + duration * 60000);
-      const returnTime = endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const returnTime = endDate.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
 
       document.getElementById("result").innerText = `You need to clock back in at ${returnTime}.`;
     }
