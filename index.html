@@ -99,7 +99,7 @@
       const breakMinutes = parseInt(document.getElementById("durationMinutes").value, 10) || 0;
       const clockIn = document.getElementById("clockInTime").value;
 
-      if (!start || !clockIn || breakMinutes === 0) {
+      if (!start || !clockIn || breakMinutes < 0) {
         document.getElementById("result").innerText = "Please enter clock-in time, break start, and break duration.";
         return;
       }
@@ -112,22 +112,17 @@
       const returnDate = new Date(breakStartDate.getTime() + breakMs);
       const returnTime = returnDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+      // Now calculate exactly 8 hours from clockIn
       const [clockInHour, clockInMinute] = clockIn.split(":").map(Number);
       const clockInDate = new Date();
       clockInDate.setHours(clockInHour, clockInMinute, 0);
 
-      // Calculate work done before the break
-      const workBeforeBreakMs = breakStartDate - clockInDate;
-
-      // Calculate remaining time to reach 8 hours
-      const totalWorkMs = 8 * 60 * 60000; // 8 hours in ms
-      const workAfterBreakMs = totalWorkMs - workBeforeBreakMs;
-
-      const clockOutDate = new Date(returnDate.getTime() + workAfterBreakMs);
+      const totalWorkTime = 8 * 60 * 60000; // 8 hours
+      const clockOutDate = new Date(clockInDate.getTime() + totalWorkTime);
       const clockOutTime = clockOutDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
       document.getElementById("result").innerText = `You need to clock back in at ${returnTime}.
-To stay within 8 work hours, you should clock out at ${clockOutTime}.`;
+To complete 8 full work hours from clock-in, you should clock out at ${clockOutTime}.`;
     }
   </script>
 </body>
